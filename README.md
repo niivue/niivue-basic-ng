@@ -1,6 +1,6 @@
 # NiivueBasicNg
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.6.
+This project contains boiler plate code to get started with [Niivue](https://github.com/niivue). The project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.6.
 
 ## Development server
 
@@ -12,7 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build` to build the project the first time or anytime Niivue is updated. This command generates type information at run time. `ng build` can be used after the type information has been generated. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 

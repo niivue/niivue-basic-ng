@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NiftiDetailComponent } from './nifti-detail/nifti-detail.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NiftiDetailComponent
   ],
   imports: [
     BrowserModule,
