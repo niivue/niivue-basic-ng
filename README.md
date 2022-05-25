@@ -1,6 +1,6 @@
 # NiivueBasicNg
 
-This project contains boiler plate code to get started with [Niivue](https://github.com/niivue). The project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.6.
+This project contains boiler plate code for an Angular app to get started with [Niivue](https://github.com/niivue). The project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.6.
 
 ## Development server
 
