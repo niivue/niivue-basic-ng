@@ -11,7 +11,7 @@ export class NiftiDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    const url = '/assets/mni152.nii.gz';
+    const url = './assets/mni152.nii.gz';
     const volumeList = [
       {
         url,

@@ -7,7 +7,9 @@
     "build": "npm run types && ng build",
     "watch": "npm run types && ng build --watch --configuration development",
     "test": "ng test",
-    "types": "npx -p typescript tsc node_modules/@niivue/niivue/src/*.js --lib ES7 --declaration --allowJs --emitDeclarationOnly --outDir types"
+    "types": "npx -p typescript tsc node_modules/@niivue/niivue/src/*.js --lib ES7 --declaration --allowJs --emitDeclarationOnly --outDir types",
+    "build-prod": "npm run types && ng build --base-href=niivue-basic-ng",
+    "deploy": "ng deploy --base-href=/niivue-basic-ng/"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +22,7 @@
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
     "@niivue/niivue": "^0.23.1",
+    "angular-cli-ghpages": "^1.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
