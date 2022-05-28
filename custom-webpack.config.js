@@ -1,6 +1,5 @@
 const webpack = require('webpack');
-
-module.exports = {
+const config = {
   plugins: [
     new webpack.DefinePlugin({
       'STABLE_FEATURE': JSON.stringify(true),
@@ -18,5 +17,13 @@ module.exports = {
         ],
       },
     ],
-  }
+  },
+}
+
+module.exports = (env, argv) => {
+  // const publicPath = (argv.mode === 'production') ? '/niivue-basic-ng' : '/';
+  // config.output = {
+  //   publicPath: publicPath
+  // }
+  return config;
 };
