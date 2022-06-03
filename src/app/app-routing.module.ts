@@ -4,7 +4,7 @@ import { SessionComponent } from './session/session.component';
 
 const routes: Routes = [
   {    
-    path: 'session/:id/:editor', component: SessionComponent
+    path: 'session/:id/:sessionKey', component: SessionComponent
   },
   {
     path: 'session/:id', component: SessionComponent

@@ -6,8 +6,6 @@ import { interval } from 'rxjs';
 
 const interval$ = interval(300); // every X ms send azimuth and elevation
 
-// ws://localhost:3000/websockets?userid=cdrake&session=1
-
 @Component({
   selector: 'app-session',
   templateUrl: './session.component.html',
@@ -18,19 +16,21 @@ export class SessionComponent implements OnInit {
   private isEditor = false;
   private serverConnection$?: WebSocketSubject<unknown>;
   private niivue: Niivue;
-  
+  private sessionKey?: string;
+
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
+    
     this.route.paramMap.subscribe(
       (params: ParamMap) => {
         this.id = params.get('id')!;
-        if(params.has('editor')) {
+        if(params.has('sessionKey')) {
           this.isEditor = true;
-          console.log('editor');
+          this.sessionKey = params.get('sessionKey')!;
+          console.log('sessionKey is ' + this.sessionKey);
         }
-        this.serverConnection$ = webSocket(`ws://localhost:3000/websockets?userid=cdrake&session=${this.id}`);
+        this.serverConnection$ = webSocket(`ws://localhost:3000/websockets?session=${this.id}`);
       }
     )
     
@@ -53,18 +53,31 @@ export class SessionComponent implements OnInit {
         const message = msg as JSON;
         // console.log((msg as JSON));
         if(message['azimuth']) {
-          // console.log('updating azimuth an elevation');
           this.niivue.scene.renderAzimuth = message['azimuth'];
           this.niivue.scene.renderElevation = message['elevation'];
           this.niivue.volScaleMultiplier = message['zoom'];
           this.niivue.scene.clipPlane = message['clipPlane'];
           this.niivue.drawScene();
         }
+
+        if(message['key']) {
+          this.sessionKey = message['key'];
+          console.log(this.sessionKey);
+          alert(this.sessionKey);
+        }
         
       }, // Called whenever there is a message from the server.
       error: err => console.log(err), // Called if at any point WebSocket API signals some kind of error.
       complete: () => console.log('complete') // Called when connection is closed (for whatever reason).
      });
+    
+    // if this is the editor we need create the session
+    if(this.isEditor) {
+      this.serverConnection$?.next({
+        "type": "create",       
+      });
+    }
+
     const subscribe = interval$.subscribe(() => {
       if(this.isEditor) {
         this.serverConnection$?.next({
@@ -72,12 +85,8 @@ export class SessionComponent implements OnInit {
           "azimuth": this.niivue.scene.renderAzimuth,
           "elevation": this.niivue.scene.renderElevation,
           "clipPlane": this.niivue.scene.clipPlane,
-          "zoom": this.niivue.volScaleMultiplier
-        });    
-      }
-      else {
-        this.serverConnection$?.next({
-          "type": "get",          
+          "zoom": this.niivue.volScaleMultiplier,
+          "key": this.sessionKey
         });    
       }
     });
