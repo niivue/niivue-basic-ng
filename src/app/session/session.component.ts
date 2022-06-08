@@ -52,18 +52,23 @@ export class SessionComponent implements OnInit {
       next: msg => {    
         const message = msg as JSON;
         // console.log((msg as JSON));
-        if(message['azimuth']) {
-          this.niivue.scene.renderAzimuth = message['azimuth'];
-          this.niivue.scene.renderElevation = message['elevation'];
-          this.niivue.volScaleMultiplier = message['zoom'];
-          this.niivue.scene.clipPlane = message['clipPlane'];
-          this.niivue.drawScene();
-        }
-
-        if(message['key']) {
-          this.sessionKey = message['key'];
-          console.log(this.sessionKey);
-          alert(this.sessionKey);
+        switch (message["op"]) {
+          case "update":
+        
+            this.niivue.scene.renderAzimuth = message['azimuth'];
+            this.niivue.scene.renderElevation = message['elevation'];
+            this.niivue.volScaleMultiplier = message['zoom'];
+            this.niivue.scene.clipPlane = message['clipPlane'];
+            this.niivue.drawScene();
+            break;
+          case "create":
+            if (!message["isError"]) {
+              this.sessionKey = message['key'];
+              console.log(this.sessionKey);
+              alert(this.sessionKey);
+            }
+            break;          
+            
         }
         
       }, // Called whenever there is a message from the server.
@@ -74,14 +79,14 @@ export class SessionComponent implements OnInit {
     // if this is the editor we need create the session
     if(this.isEditor) {
       this.serverConnection$?.next({
-        "type": "create",       
+        "op": "create",       
       });
     }
 
     const subscribe = interval$.subscribe(() => {
       if(this.isEditor) {
         this.serverConnection$?.next({
-          "type": "put", 
+          "op": "put", 
           "azimuth": this.niivue.scene.renderAzimuth,
           "elevation": this.niivue.scene.renderElevation,
           "clipPlane": this.niivue.scene.clipPlane,
